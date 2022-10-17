@@ -2,6 +2,9 @@ import psycopg2
 from tkinter import *
 import sys
 
+Text = ""
+
+
 root = Tk()
 root.geometry('400x200')
 
@@ -24,16 +27,23 @@ def register():
 def login():
     username = entry3.get()
     password = entry4.get()
-
+    global Text
 
     cur.execute('SELECT COUNT(id) FROM "user" WHERE username = {0} AND password = {1};'.format("'" + username + "'", "'" + password + "'"))
     rows = cur.fetchall()
 
     if rows == [(1,)]:
         print("logged in")
+        print(rows)
+        succes = "Succesfully logged in."
+        label.config(text = succes)
+
     else:
         print("Incorrect credentials!")
         print(rows)
+        succes = "Incorrect credentials!"
+        label.config(text = succes)
+
 
 
 entry1 = Entry(root, width=20)
@@ -52,6 +62,8 @@ entry4.pack()
 
 Button(root, text="Login", command=login).pack()
 
+label = Label(root, text=Text)
+label.pack()
 
 root.mainloop()
 
