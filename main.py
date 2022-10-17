@@ -22,17 +22,19 @@ def register():
     print("Done")
 
 def login():
-    username = entry1.get()
-    password = entry2.get()
+    username = entry3.get()
+    password = entry4.get()
 
-    try:
-        cur.execute('IF EXISTS (SELECT * FROM "user" WHERE username = {} and password = {});'.format("'" + username + "'", "'" + password + "'"))
-        succesful = True
-    except:
-        print("Invalid credentials!")
-        sys.exit()
-    if succesful:
+
+    cur.execute('SELECT COUNT(id) FROM "user" WHERE username = {0} AND password = {1};'.format("'" + username + "'", "'" + password + "'"))
+    rows = cur.fetchall()
+
+    if rows == [(1,)]:
         print("logged in")
+    else:
+        print("Incorrect credentials!")
+        print(rows)
+
 
 entry1 = Entry(root, width=20)
 entry1.pack()
